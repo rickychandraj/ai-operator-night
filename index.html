@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI OPERATOR NIGHT — 30 April 2026 | Jakarta</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg: #0a0a0a;
+    --bg-elev: #111111;
+    --surface: rgba(255, 255, 255, 0.03);
+    --surface-hover: rgba(255, 255, 255, 0.06);
+    --border: rgba(255, 255, 255, 0.08);
+    --border-bright: rgba(255, 255, 255, 0.15);
+    --text: #f5f5f5;
+    --text-dim: #a3a3a3;
+    --text-muted: #737373;
+    --accent: #ff4d2d;
+    --accent-dim: rgba(255, 77, 45, 0.15);
+  }
+
+  html, body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', -apple-system, sans-serif;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  .mono { font-family: 'JetBrains Mono', monospace; }
+
+  /* Grid background */
+  .grid-bg {
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+    background-size: 64px 64px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .glow {
+    position: fixed;
+    width: 600px;
+    height: 600px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,77,45,0.15) 0%, transparent 70%);
+    filter: blur(80px);
+    pointer-events: none;
+    z-index: 0;
+  }
+  .glow-1 { top: -200px; right: -100px; }
+  .glow-2 { bottom: -200px; left: -100px; background: radial-gradient(circle, rgba(80,50,255,0.1) 0%, transparent 70%); }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Nav */
+  nav {
+    padding: 24px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border);
+  }
+  .logo {
+    font-weight: 800;
+    font-size: 14px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+  .nav-cta {
+    font-size: 13px;
+    padding: 10px 20px;
+    background: var(--accent);
+    color: #fff;
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: transform 0.2s;
+  }
+  .nav-cta:hover { transform: translateY(-1px); }
+
+  /* Hero */
+  .hero {
+    padding: 80px 0 120px;
+    text-align: left;
+  }
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-dim);
+    margin-bottom: 32px;
+    letter-spacing: 0.05em;
+  }
+  .badge-dot {
+    width: 8px;
+    height: 8px;
+    background: var(--accent);
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(255,77,45,0.7); }
+    50% { opacity: 0.8; box-shadow: 0 0 0 8px rgba(255,77,45,0); }
+  }
+
+  h1 {
+    font-size: clamp(48px, 8vw, 96px);
+    font-weight: 800;
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+    margin-bottom: 24px;
+  }
+  h1 .highlight { color: var(--accent); }
+  h1 .strike {
+    text-decoration: line-through;
+    text-decoration-color: var(--accent);
+    text-decoration-thickness: 6px;
+    color: var(--text-muted);
+  }
+
+  .hero-sub {
+    font-size: 20px;
+    color: var(--text-dim);
+    max-width: 640px;
+    margin-bottom: 48px;
+    line-height: 1.5;
+  }
+
+  .hero-meta {
+    display: flex;
+    gap: 48px;
+    flex-wrap: wrap;
+    margin-bottom: 48px;
+    padding: 24px 0;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+  .meta-item .meta-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+  }
+  .meta-item .meta-value {
+    font-size: 16px;
+    font-weight: 600;
+  }
+
+  .hero-cta-row { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
+  .btn-primary {
+    padding: 18px 36px;
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    transition: all 0.2s;
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 24px rgba(255,77,45,0.3); }
+
+  .spots-left {
+    font-size: 13px;
+    color: var(--text-dim);
+  }
+  .spots-left strong { color: var(--text); }
+
+  /* Countdown */
+  .countdown {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin: 64px 0;
+  }
+  .count-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 24px;
+    text-align: center;
+    backdrop-filter: blur(12px);
+  }
+  .count-num {
+    font-size: 48px;
+    font-weight: 800;
+    line-height: 1;
+    margin-bottom: 8px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .count-label {
+    font-size: 11px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+  }
+
+  /* Sections */
+  section { padding: 100px 0; border-top: 1px solid var(--border); position: relative; z-index: 1; }
+  .section-label {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 600;
+    margin-bottom: 16px;
+  }
+  h2 {
+    font-size: clamp(32px, 5vw, 56px);
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    margin-bottom: 24px;
+    max-width: 800px;
+  }
+  .section-sub {
+    font-size: 18px;
+    color: var(--text-dim);
+    max-width: 640px;
+    margin-bottom: 64px;
+  }
+
+  /* What you get */
+  .features {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+  }
+  .feature {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 32px;
+    backdrop-filter: blur(12px);
+    transition: all 0.3s;
+  }
+  .feature:hover { border-color: var(--border-bright); background: var(--surface-hover); transform: translateY(-4px); }
+  .feature-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--accent);
+    margin-bottom: 20px;
+  }
+  .feature h3 {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+  .feature p { color: var(--text-dim); font-size: 15px; }
+
+  /* Agenda */
+  .agenda-grid { display: grid; gap: 0; }
+  .agenda-row {
+    display: grid;
+    grid-template-columns: 120px 1fr 200px;
+    gap: 32px;
+    padding: 28px 0;
+    border-top: 1px solid var(--border);
+    align-items: start;
+  }
+  .agenda-row:last-child { border-bottom: 1px solid var(--border); }
+  .agenda-time {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    color: var(--text-dim);
+    padding-top: 4px;
+  }
+  .agenda-title { font-size: 18px; font-weight: 600; margin-bottom: 6px; }
+  .agenda-desc { font-size: 14px; color: var(--text-dim); }
+  .agenda-speaker { font-size: 13px; color: var(--text-muted); padding-top: 4px; text-align: right; }
+
+  /* Speakers */
+  .speakers {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 24px;
+  }
+  .speaker {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 32px;
+    backdrop-filter: blur(12px);
+  }
+  .speaker-avatar {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent), #ff8c2d);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 20px;
+  }
+  .speaker-name { font-size: 20px; font-weight: 700; margin-bottom: 4px; }
+  .speaker-role { font-size: 13px; color: var(--accent); margin-bottom: 16px; font-weight: 500; }
+  .speaker-bio { font-size: 14px; color: var(--text-dim); }
+
+  /* Registration */
+  .reg-wrapper {
+    background: linear-gradient(135deg, var(--bg-elev), #1a1a1a);
+    border: 1px solid var(--border-bright);
+    border-radius: 16px;
+    padding: 64px 48px;
+    position: relative;
+    overflow: hidden;
+  }
+  .reg-wrapper::before {
+    content: '';
+    position: absolute;
+    top: -100px;
+    right: -100px;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, var(--accent-dim) 0%, transparent 70%);
+    filter: blur(60px);
+  }
+  .reg-content { position: relative; z-index: 1; display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: start; }
+  .reg-info h2 { font-size: 40px; }
+  .reg-tiers { display: flex; flex-direction: column; gap: 16px; margin-top: 32px; }
+  .tier {
+    padding: 20px 24px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+  }
+  .tier-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+  .tier-name { font-size: 15px; font-weight: 600; }
+  .tier-price { font-size: 18px; font-weight: 700; color: var(--accent); }
+  .tier-desc { font-size: 13px; color: var(--text-dim); }
+  .tier.featured { border-color: var(--accent); background: var(--accent-dim); }
+
+  .form-group { margin-bottom: 20px; }
+  .form-group label { display: block; font-size: 12px; color: var(--text-dim); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.1em; }
+  .form-group input, .form-group select {
+    width: 100%;
+    padding: 14px 16px;
+    background: var(--bg);
+    border: 1px solid var(--border-bright);
+    border-radius: 6px;
+    color: var(--text);
+    font-size: 14px;
+    font-family: inherit;
+    transition: border-color 0.2s;
+  }
+  .form-group input:focus, .form-group select:focus { outline: none; border-color: var(--accent); }
+  .btn-full {
+    width: 100%;
+    padding: 18px;
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    margin-top: 8px;
+    transition: transform 0.2s;
+  }
+  .btn-full:hover { transform: translateY(-2px); }
+  .form-note { font-size: 12px; color: var(--text-muted); margin-top: 16px; text-align: center; }
+
+  /* FAQ */
+  .faq-item {
+    border-top: 1px solid var(--border);
+    padding: 24px 0;
+  }
+  .faq-item:last-child { border-bottom: 1px solid var(--border); }
+  .faq-q {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    font-size: 17px;
+    font-weight: 600;
+  }
+  .faq-q::after {
+    content: '+';
+    font-size: 24px;
+    color: var(--text-dim);
+    transition: transform 0.2s;
+  }
+  .faq-item.open .faq-q::after { transform: rotate(45deg); }
+  .faq-a {
+    font-size: 15px;
+    color: var(--text-dim);
+    margin-top: 12px;
+    display: none;
+    max-width: 700px;
+  }
+  .faq-item.open .faq-a { display: block; }
+
+  /* Footer */
+  footer {
+    padding: 48px 0 64px;
+    border-top: 1px solid var(--border);
+    color: var(--text-muted);
+    font-size: 13px;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  footer a { color: var(--text-dim); text-decoration: none; }
+
+  @media (max-width: 768px) {
+    .hero-meta { gap: 24px; }
+    .countdown { grid-template-columns: repeat(2, 1fr); }
+    .agenda-row { grid-template-columns: 1fr; gap: 8px; }
+    .agenda-speaker { text-align: left; }
+    .reg-content { grid-template-columns: 1fr; gap: 40px; }
+    .reg-wrapper { padding: 40px 24px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="grid-bg"></div>
+<div class="glow glow-1"></div>
+<div class="glow glow-2"></div>
+
+<div class="container">
+
+  <nav>
+    <div class="logo">AICREATORLABS<span style="color: var(--accent);">.</span></div>
+    <a href="#register" class="nav-cta">Daftar sekarang</a>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero" style="padding-top: 80px; border-top: none;">
+    <div class="badge">
+      <span class="badge-dot"></span>
+      <span>30 APRIL 2026 · JAKARTA + LIVESTREAM</span>
+    </div>
+
+    <h1>
+      Stop jadi <span class="strike">penonton</span><br>
+      AI. Jadi <span class="highlight">operator</span>.
+    </h1>
+
+    <p class="hero-sub">
+      Satu malam. Lima builder. Tiga jam. Kita bongkar stack AI yang lagi dipakai buat ngejalanin bisnis real di Indonesia — bukan demo, bukan teori, bukan hype.
+    </p>
+
+    <div class="hero-meta">
+      <div class="meta-item">
+        <div class="meta-label">Tanggal</div>
+        <div class="meta-value">Kamis, 30 April 2026</div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-label">Waktu</div>
+        <div class="meta-value">19:00 – 22:00 WIB</div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-label">Lokasi</div>
+        <div class="meta-value">M Bloc Space, Jakarta</div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-label">Format</div>
+        <div class="meta-value">Hybrid (Offline + Zoom)</div>
+      </div>
+    </div>
+
+    <div class="hero-cta-row">
+      <a href="#register" class="btn-primary">
+        Amankan kursi lo
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+      </a>
+      <div class="spots-left">
+        <strong>37</strong> kursi tersisa dari 120 · Early bird tutup <strong>25 April</strong>
+      </div>
+    </div>
+
+    <div class="countdown" id="countdown">
+      <div class="count-box"><div class="count-num" id="days">07</div><div class="count-label">Hari</div></div>
+      <div class="count-box"><div class="count-num" id="hours">14</div><div class="count-label">Jam</div></div>
+      <div class="count-box"><div class="count-num" id="mins">32</div><div class="count-label">Menit</div></div>
+      <div class="count-box"><div class="count-num" id="secs">08</div><div class="count-label">Detik</div></div>
+    </div>
+  </section>
+
+  <!-- WHAT YOU GET -->
+  <section>
+    <div class="section-label">What's in it</div>
+    <h2>Bukan event inspirasional. Ini operator's playbook.</h2>
+    <p class="section-sub">Lo datang bawa laptop, lo pulang bawa sistem yang udah siap lo copy ke bisnis lo sendiri minggu depannya.</p>
+
+    <div class="features">
+      <div class="feature">
+        <div class="feature-num">01</div>
+        <h3>Live stack teardown</h3>
+        <p>Lima operator bongkar persis tools, workflow, dan prompt yang lagi mereka pakai — lengkap sama angka revenue-nya.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-num">02</div>
+        <h3>Template starter pack</h3>
+        <p>15 prompt, 5 N8N workflow, dan 3 Claude skill siap pakai. Semua udah tested di production, bukan proof-of-concept.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-num">03</div>
+        <h3>Hot seat session</h3>
+        <p>20 orang terpilih naik ke hot seat, ceritain bottleneck bisnis mereka, langsung dibantu design AI solution-nya on the spot.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-num">04</div>
+        <h3>Operator network</h3>
+        <p>Akses ke Telegram group berisi 120 builder yang udah benar-benar ship, bukan grup yang isinya cuma share berita AI doang.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-num">05</div>
+        <h3>Recording & resource</h3>
+        <p>Semua recording, slide, dan resource bisa lo akses lifetime. Missed sesi? Tinggal tonton ulang kapan aja.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-num">06</div>
+        <h3>Food & drinks</h3>
+        <p>Buat yang offline — full dinner + coffee bar sepanjang acara. Lo fokus belajar, kita urus perut.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- AGENDA -->
+  <section>
+    <div class="section-label">Rundown</div>
+    <h2>Tiga jam yang padat. Zero fluff.</h2>
+
+    <div class="agenda-grid">
+      <div class="agenda-row">
+        <div class="agenda-time">19:00</div>
+        <div>
+          <div class="agenda-title">Registration & networking</div>
+          <div class="agenda-desc">Ambil ID, ambil kopi, kenalan sama operator lain.</div>
+        </div>
+        <div class="agenda-speaker">—</div>
+      </div>
+      <div class="agenda-row">
+        <div class="agenda-time">19:30</div>
+        <div>
+          <div class="agenda-title">Opening: The operator mindset</div>
+          <div class="agenda-desc">Kenapa 90% orang stuck di consumer mode — dan bagaimana 10% lainnya jadi operator.</div>
+        </div>
+        <div class="agenda-speaker">Ricky (TPB)</div>
+      </div>
+      <div class="agenda-row">
+        <div class="agenda-time">19:45</div>
+        <div>
+          <div class="agenda-title">Stack Teardown #1: AI-powered F&B ops</div>
+          <div class="agenda-desc">Case study real: gimana satu restoran pakai Claude + N8N buat handle 200 DM/hari tanpa nambah CS.</div>
+        </div>
+        <div class="agenda-speaker">Sandra Wijaya</div>
+      </div>
+      <div class="agenda-row">
+        <div class="agenda-time">20:15</div>
+        <div>
+          <div class="agenda-title">Stack Teardown #2: Content factory</div>
+          <div class="agenda-desc">Workflow produksi 90 konten/bulan dengan tim 2 orang. Lengkap sama cost breakdown-nya.</div>
+        </div>
+        <div class="agenda-speaker">Fadhil Rahman</div>
+      </div>
+      <div class="agenda-row">
+        <div class="agenda-time">20:45</div>
+        <div>
+          <div class="agenda-title">Break + live demo booth</div>
+          <div class="agenda-desc">Main langsung ke stack-nya. Pegang laptop-nya. Tanya apapun.</div>
+        </div>
+        <div class="agenda-speaker">—</div>
+      </div>
+      <div class="agenda-row">
+        <div class="agenda-time">21:00</div>
+        <div>
+          <div class="agenda-title">Hot Seat Session</div>
+          <div class="agenda-desc">5 peserta naik panggung, ceritain bottleneck mereka, panel bantu design solusinya live.</div>
+        </div>
+        <div class="agenda-speaker">Panel</div>
+      </div>
+      <div class="agenda-row">
+        <div class="agenda-time">21:45</div>
+        <div>
+          <div class="agenda-title">Closing & afterparty</div>
+          <div class="agenda-desc">Tukar kontak, lanjut ngobrol, kenalan sama operator lain.</div>
+        </div>
+        <div class="agenda-speaker">—</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SPEAKERS -->
+  <section>
+    <div class="section-label">The line-up</div>
+    <h2>Operator, bukan influencer.</h2>
+    <p class="section-sub">Semua speaker punya satu syarat: AI udah jalan di bisnis mereka, dan mereka bisa tunjukkin angkanya.</p>
+
+    <div class="speakers">
+      <div class="speaker">
+        <div class="speaker-avatar">RC</div>
+        <div class="speaker-name">Ricky Chandra</div>
+        <div class="speaker-role">Founder, AI Creator Labs</div>
+        <div class="speaker-bio">Bangun Polaris (B2B AI consulting) dan TPB (160K+ community). Operator di balik 20+ AI system yang deployed di Indonesia.</div>
+      </div>
+      <div class="speaker">
+        <div class="speaker-avatar">SW</div>
+        <div class="speaker-name">Sandra Wijaya</div>
+        <div class="speaker-role">Co-founder, Warung Pintar AI</div>
+        <div class="speaker-bio">Scale F&B brand dari 2 cabang jadi 14 cabang dalam 18 bulan, semua lewat AI-powered ops stack.</div>
+      </div>
+      <div class="speaker">
+        <div class="speaker-avatar">FR</div>
+        <div class="speaker-name">Fadhil Rahman</div>
+        <div class="speaker-role">Creator & Studio Owner</div>
+        <div class="speaker-bio">Content machine 90 post/bulan dengan tim 2 orang. Mentor resmi program INKUBATOR angkatan 3.</div>
+      </div>
+      <div class="speaker">
+        <div class="speaker-avatar">AM</div>
+        <div class="speaker-name">Ayu Melati</div>
+        <div class="speaker-role">Head of Growth, Kopi Kenangan Digital</div>
+        <div class="speaker-bio">Design LLM-powered personalization engine yang bikin AOV naik 34% dalam satu kuartal.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- REGISTER -->
+  <section id="register">
+    <div class="reg-wrapper">
+      <div class="reg-content">
+        <div class="reg-info">
+          <div class="section-label">Pendaftaran</div>
+          <h2>Pilih tier lo.</h2>
+          <p style="color: var(--text-dim); font-size: 16px;">Kursi terbatas. First come, first served. Lo akan dapat email konfirmasi + link ke pre-event brief setelah pembayaran.</p>
+
+          <div class="reg-tiers">
+            <div class="tier">
+              <div class="tier-head">
+                <div class="tier-name">Livestream Access</div>
+                <div class="tier-price">Rp 250K</div>
+              </div>
+              <div class="tier-desc">Zoom + recording + template pack. Akses Telegram group.</div>
+            </div>
+            <div class="tier featured">
+              <div class="tier-head">
+                <div class="tier-name">Offline Standard · Early Bird</div>
+                <div class="tier-price">Rp 750K</div>
+              </div>
+              <div class="tier-desc">Semua benefit + kursi fisik + dinner. Normal price Rp 1.2jt setelah 25 April.</div>
+            </div>
+            <div class="tier">
+              <div class="tier-head">
+                <div class="tier-name">Hot Seat VIP</div>
+                <div class="tier-price">Rp 2.5jt</div>
+              </div>
+              <div class="tier-desc">Front row + guaranteed hot seat slot + 1-on-1 30 menit sama panel.</div>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <h3 style="font-size: 22px; margin-bottom: 24px;">Reserve your spot</h3>
+          <form onsubmit="event.preventDefault(); alert('Form demo — pada implementasi asli, submit ke backend lo.')">
+            <div class="form-group">
+              <label>Nama lengkap</label>
+              <input type="text" required placeholder="John Doe">
+            </div>
+            <div class="form-group">
+              <label>Email</label>
+              <input type="email" required placeholder="john@example.com">
+            </div>
+            <div class="form-group">
+              <label>WhatsApp</label>
+              <input type="tel" required placeholder="+62 812 xxxx xxxx">
+            </div>
+            <div class="form-group">
+              <label>Pilih tier</label>
+              <select required>
+                <option value="">— Pilih salah satu —</option>
+                <option>Livestream · Rp 250K</option>
+                <option>Offline Early Bird · Rp 750K</option>
+                <option>Hot Seat VIP · Rp 2.5jt</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Bisnis/pekerjaan lo saat ini</label>
+              <input type="text" required placeholder="Contoh: F&B owner, content creator">
+            </div>
+            <button type="submit" class="btn-full">Lanjut ke pembayaran →</button>
+            <p class="form-note">Pembayaran via transfer bank / QRIS / kartu kredit. Refund 100% sampai 7 hari sebelum acara.</p>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section>
+    <div class="section-label">FAQ</div>
+    <h2>Yang biasanya ditanyain.</h2>
+
+    <div style="margin-top: 48px;">
+      <div class="faq-item open">
+        <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Gue bukan developer. Bakal ketinggalan gak?</div>
+        <div class="faq-a">Enggak. 70% peserta kita non-technical — pemilik bisnis, marketer, content creator. Semua demo dibuat bisa diikutin tanpa coding. Lo cuma butuh laptop dan niat.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Acaranya direkam gak?</div>
+        <div class="faq-a">Iya, semua sesi direkam dan peserta dapat akses lifetime ke recording dalam 48 jam setelah event.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Bedanya sama course online lo?</div>
+        <div class="faq-a">Course fokus ke knowledge building per module. Event ini fokus ke live teardown + hot seat — lo lihat stack real-nya dan bisa langsung tanya ke operator-nya.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Gue dari luar Jakarta — worth gak datang offline?</div>
+        <div class="faq-a">Kalau bisa — iya. Networking sama operator lain yang udah jalan adalah 40% value dari event ini. Tapi kalau gak bisa, livestream juga dapet semua konten core + recording.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Kalau berhalangan, bisa refund?</div>
+        <div class="faq-a">Bisa full refund sampai 7 hari sebelum acara. Setelah itu, ticket bisa di-transfer ke orang lain — cukup email ke kita.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Ada student discount?</div>
+        <div class="faq-a">Ada. Kirim foto kartu pelajar/mahasiswa aktif ke hello@aicreatorlabs.id — dapat 40% off untuk tier Livestream dan Offline Standard.</div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div>© 2026 PT AI Creator Labs Indonesia · Dibuat sama kopi sama AI.</div>
+    <div style="display: flex; gap: 24px;">
+      <a href="#">Kontak</a>
+      <a href="#">Terms</a>
+      <a href="#">Privacy</a>
+    </div>
+  </footer>
+
+</div>
+
+<script>
+  // Countdown ke 30 April 2026, 19:00 WIB
+  const target = new Date('2026-04-30T19:00:00+07:00').getTime();
+  function updateCountdown() {
+    const now = Date.now();
+    const diff = target - now;
+    if (diff < 0) return;
+    const d = Math.floor(diff / 86400000);
+    const h = Math.floor((diff % 86400000) / 3600000);
+    const m = Math.floor((diff % 3600000) / 60000);
+    const s = Math.floor((diff % 60000) / 1000);
+    document.getElementById('days').textContent = String(d).padStart(2, '0');
+    document.getElementById('hours').textContent = String(h).padStart(2, '0');
+    document.getElementById('mins').textContent = String(m).padStart(2, '0');
+    document.getElementById('secs').textContent = String(s).padStart(2, '0');
+  }
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
+
+  // Smooth scroll
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      const target = document.querySelector(a.getAttribute('href'));
+      if (target) target.scrollIntoView({ behavior: 'smooth' });
+    });
+  });
+</script>
+
+</body>
+</html>
